@@ -2,8 +2,7 @@
 
 **An Integrated Healthcare Platform powered by Machine Learning & AI**
 
-![Project Banner](https://via.placeholder.com/1200x400.png?text=Multi+Disease+Detection+System+Dashboard)
-*(Note: Replace the image link above with a real screenshot of your new medical dashboard)*
+<img src="Project Image.png" width="800">
 
 ## 📋 Overview
 

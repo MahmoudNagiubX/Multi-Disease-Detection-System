@@ -99,7 +99,7 @@ Multi-Disease-Detection-System/
 * **Performance:** ~73% Accuracy (Random Forest).
 
 ### Brain Tumor Model
-* **Dataset:** [Brain Tumor Classification (MRI)](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri).
+* **Dataset:** [Brain Tumor Classification (MRI)](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset).
 * **Architecture:** Custom CNN with 4 Convolutional layers, Max Pooling, and Dropout for regularization.
 * **Performance:** ~96%+ Accuracy on test set.
 

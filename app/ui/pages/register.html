@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - MDDS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('mdds-theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body class="layout-default">
+    <nav class="navbar">
+        <div class="navbar-container" style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <a href="{{ url_for('main.welcome') }}" class="sidebar-brand">
+                <div style="width: 32px; height: 32px; background: var(--color-primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                </div>
+                <span>MDDS</span>
+            </a>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="pill-toggle" id="themeToggle">
+                    <div class="pill-option active" data-theme="light">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    </div>
+                    <div class="pill-option" data-theme="dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    </div>
+                </div>
+                <a href="{{ url_for('main.login') }}" class="btn btn-primary">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash flash-{{ category }}" style="display:none;">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="hero-mesh" style="min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: var(--space-8);">
+        <div style="width: 100%; max-width: 480px; position: relative; z-index: 1;">
+            <div class="card" style="padding: 2.5rem; backdrop-filter: blur(12px); background: var(--color-surface); border: 1px solid var(--color-border);">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--blue-600), var(--blue-700)); border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; color: white; margin: 0 auto 1rem; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                    </div>
+                    <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Create Account</h1>
+                    <p style="color: var(--color-text-light);">Join MDDS for AI-powered health insights</p>
+                </div>
+
+                <form method="post" action="{{ url_for('main.register') }}">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" name="username" class="form-input" required autocomplete="username" placeholder="Choose a username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input" required autocomplete="email" placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-input" required autocomplete="new-password" placeholder="Create a strong password" minlength="6">
+                        <p style="font-size: 0.875rem; color: var(--color-text-lighter); margin-top: 0.5rem;">At least 6 characters</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-input" required autocomplete="new-password" placeholder="Confirm your password">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full btn-lg">
+                        Create Account →
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border);">
+                    <p style="color: var(--color-text-light);">
+                        Already have an account? 
+                        <a href="{{ url_for('main.login') }}" style="font-weight: 600; color: var(--color-primary);">Sign in here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

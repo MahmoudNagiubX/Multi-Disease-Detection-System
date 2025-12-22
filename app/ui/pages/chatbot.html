@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Doctor Assistant - MDDS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('mdds-theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body class="layout-dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="{{ url_for('main.dashboard') }}" class="sidebar-brand">
+                <div style="width: 32px; height: 32px; background: var(--color-primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                </div>
+                <span>MDDS</span>
+            </a>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div style="font-size: 0.75rem; font-weight: 600; color: var(--color-text-lighter); text-transform: uppercase; letter-spacing: 0.05em; padding: 0 1rem; margin-bottom: 0.5rem;">Menu</div>
+            
+            <a href="{{ url_for('main.dashboard') }}" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Dashboard
+            </a>
+            
+            <a href="{{ url_for('main.heart_disease') }}" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Heart Disease
+            </a>
+            
+            <a href="{{ url_for('main.brain_tumor') }}" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>
+                Brain MRI
+            </a>
+            
+            <a href="{{ url_for('main.chatbot') }}" class="nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                AI Doctor
+            </a>
+            
+            <div style="flex: 1;"></div>
+            
+            <div style="font-size: 0.75rem; font-weight: 600; color: var(--color-text-lighter); text-transform: uppercase; letter-spacing: 0.05em; padding: 0 1rem; margin-bottom: 0.5rem;">Settings</div>
+            
+            <div style="padding: 0 1rem; margin-bottom: 1rem;">
+                <div class="pill-toggle" id="themeToggle">
+                    <div class="pill-option active" data-theme="light">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    </div>
+                    <div class="pill-option" data-theme="dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="{{ url_for('main.settings') }}" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Settings
+            </a>
+            
+            <a href="{{ url_for('main.logout') }}" class="nav-item" style="color: var(--color-error);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Sign Out
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" style="min-height: 100vh; display: flex; flex-direction: column; padding: 0; position: relative; background-attachment: local;">
+        <!-- Mobile Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--color-border); flex-shrink: 0; background: transparent; position: relative; z-index: 1;">
+            <button class="menu-toggle" id="menuToggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            
+            <div style="font-weight: 600; color: var(--color-text);">AI Doctor Assistant</div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}" style="display:none;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div style="flex: 1; display: flex; flex-direction: column; max-width: 1000px; margin: 0 auto; width: 100%; padding: 1rem; position: relative; z-index: 1;">
+
+            <!-- Chat Area -->
+            <div class="card" style="flex: 1; display: flex; flex-direction: column; padding: 0; overflow: hidden; margin-bottom: 1rem; background: var(--color-surface); border: 1px solid var(--color-border);">
+                <div id="chat-box" style="flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; background: transparent;">
+                    {% if user_message or assistant_reply %}
+                        {% if user_message %}
+                            <div style="align-self: flex-end; max-width: 75%;">
+                                <div style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 0.875rem 1.25rem; border-radius: 1.25rem 1.25rem 0.25rem 1.25rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);">
+                                    {{ user_message }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if assistant_reply %}
+                            <div style="align-self: flex-start; max-width: 75%; display: flex; gap: 0.75rem;">
+                                <div style="width: 36px; height: 36px; background: linear-gradient(135deg, rgba(30, 64, 175, 0.15) 0%, rgba(30, 58, 138, 0.2) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1e40af; flex-shrink: 0; box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                </div>
+                            <div style="background: var(--color-surface-hover); color: var(--color-text); padding: 0.875rem 1.25rem; border-radius: 1.25rem 1.25rem 1.25rem 0.25rem; white-space: pre-wrap; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); line-height: 1.6;">{{ assistant_reply|replace('**', '')|trim }}</div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div id="empty-state" style="text-align: center; margin-top: auto; margin-bottom: auto; padding: 2rem;">
+                            <div style="width: 72px; height: 72px; background: linear-gradient(135deg, rgba(30, 64, 175, 0.15) 0%, rgba(30, 58, 138, 0.2) 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: #1e40af; margin: 0 auto 1.5rem; box-shadow: 0 8px 24px rgba(30, 64, 175, 0.2);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            </div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem; font-weight: 600;">How can I help you today?</h3>
+                            <p style="color: var(--color-text-light); font-size: 1rem;">
+                                Ask me general medical questions or health advice
+                            </p>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Thinking Indicator -->
+                    <div id="thinking-indicator" style="display: none; align-self: flex-start; max-width: 75%;">
+                        <div style="width: 36px; height: 36px; background: linear-gradient(135deg, rgba(30, 64, 175, 0.15) 0%, rgba(30, 58, 138, 0.2) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1e40af; flex-shrink: 0; box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);">
+                            <svg id="thinking-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: rotate 1s linear infinite;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        </div>
+                        <div style="background: var(--color-surface-hover); color: var(--color-text); padding: 0.875rem 1.25rem; border-radius: 1.25rem 1.25rem 1.25rem 0.25rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                            <div style="display: flex; gap: 0.25rem; align-items: center;">
+                                <span style="width: 8px; height: 8px; background: var(--color-text-light); border-radius: 50%; animation: pulse-dot 1.4s ease-in-out infinite;"></span>
+                                <span style="width: 8px; height: 8px; background: var(--color-text-light); border-radius: 50%; animation: pulse-dot 1.4s ease-in-out infinite; animation-delay: 0.2s;"></span>
+                                <span style="width: 8px; height: 8px; background: var(--color-text-light); border-radius: 50%; animation: pulse-dot 1.4s ease-in-out infinite; animation-delay: 0.4s;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 1.25rem; border-top: 1px solid var(--color-border); background: var(--color-surface);">
+                    <form method="post" action="{{ url_for('main.chatbot') }}" id="chatbot-form" style="display: flex; gap: 0.75rem; align-items: flex-end;">
+                        <textarea
+                            name="message"
+                            id="message-input"
+                            class="form-input"
+                            placeholder="Type your message..."
+                            required
+                            rows="1"
+                            style="resize: none; min-height: 48px; max-height: 120px; padding: 0.75rem 1rem; border-radius: 12px; border: 1px solid var(--color-border); background: var(--color-surface-hover); transition: all 0.2s ease;"
+                        ></textarea>
+                        <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 48px; height: 48px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 12px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: all 0.2s ease;">
+                            <svg id="send-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        // Ensure form is enabled on page load
+        const submitBtn = document.getElementById('submit-btn');
+        const messageInput = document.getElementById('message-input');
+        const thinkingIndicator = document.getElementById('thinking-indicator');
+        
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+        }
+        
+        if (messageInput) {
+            messageInput.disabled = false;
+        }
+        
+        if (thinkingIndicator) {
+            thinkingIndicator.style.display = 'none';
+        }
+        
+        // Reset send icon if it was changed
+        const sendIcon = document.getElementById('send-icon');
+        if (sendIcon && !sendIcon.querySelector('line[x1="22"]')) {
+            sendIcon.outerHTML = '<svg id="send-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>';
+        }
+        
+        // Auto-scroll chat box to bottom
+        const chatBox = document.getElementById('chat-box');
+        if (chatBox) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        // Auto-resize textarea
+        const textarea = document.getElementById('message-input');
+        if (textarea) {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+                if (this.value === '') {
+                    this.style.height = '48px';
+                }
+            });
+        }
+
+        // --- Loading Indicator for Chatbot ---
+        const chatForm = document.getElementById('chatbot-form');
+        const emptyState = document.getElementById('empty-state');
+    
+    if (chatForm) {
+        chatForm.addEventListener('submit', function(e) {
+            const btn = document.getElementById('submit-btn');
+            const textarea = document.getElementById('message-input');
+            const sendIcon = document.getElementById('send-icon');
+            
+            // Validate message before submission
+            if (textarea && !textarea.value.trim()) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // IMPORTANT: Do NOT disable the textarea before form submission
+            // Disabled form fields do not submit their values!
+            // The form will redirect after submission, so we don't need to disable it
+            
+            // 1. Disable the button to prevent double submission
+            if (btn) {
+                btn.disabled = true;
+                btn.style.cursor = 'wait';
+                btn.style.opacity = '0.7';
+            }
+            
+            // 2. Hide empty state and show thinking indicator
+            if (emptyState) {
+                emptyState.style.display = 'none';
+            }
+            if (thinkingIndicator) {
+                thinkingIndicator.style.display = 'flex';
+                thinkingIndicator.style.flexDirection = 'row';
+                thinkingIndicator.style.alignItems = 'flex-start';
+                // Scroll to bottom to show thinking indicator
+                setTimeout(() => {
+                    if (chatBox) {
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }
+                }, 100);
+            }
+            
+            // 3. Change send icon to rotating loading icon
+            if (sendIcon) {
+                sendIcon.outerHTML = '<svg id="send-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: rotate 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="32" stroke-dashoffset="8" opacity="0.5"></circle><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path></svg>';
+            }
+            
+            // Form will submit normally with textarea value included
+        });
+    }
+
+    // Add animations
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = `
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { 
+                opacity: 0.4;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+        
+        #message-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        #submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+        
+        #submit-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+    `;
+    document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>

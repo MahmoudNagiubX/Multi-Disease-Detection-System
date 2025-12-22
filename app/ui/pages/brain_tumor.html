@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor MRI Analysis - MDDS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <!-- GSAP for smooth cursor tracking in elastic grid -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('mdds-theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body class="layout-dashboard brain-grid-page">
+    <!-- Interactive Grid Background -->
+    <div id="interactive-grid-container" class="interactive-grid-bg"></div>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="{{ url_for('main.dashboard') }}" class="sidebar-brand">
+                <div style="width: 32px; height: 32px; background: var(--color-primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                </div>
+                <span>MDDS</span>
+            </a>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div style="font-size: 0.75rem; font-weight: 600; color: var(--color-text-lighter); text-transform: uppercase; letter-spacing: 0.05em; padding: 0 1rem; margin-bottom: 0.5rem;">Menu</div>
+            
+            <a href="{{ url_for('main.dashboard') }}" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Dashboard
+            </a>
+            
+            <a href="{{ url_for('main.heart_disease') }}" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Heart Disease
+            </a>
+            
+            <a href="{{ url_for('main.brain_tumor') }}" class="nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>
+                Brain MRI
+            </a>
+            
+            <a href="{{ url_for('main.chatbot') }}" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                AI Doctor
+            </a>
+            
+            <div style="flex: 1;"></div>
+            
+            <div style="font-size: 0.75rem; font-weight: 600; color: var(--color-text-lighter); text-transform: uppercase; letter-spacing: 0.05em; padding: 0 1rem; margin-bottom: 0.5rem;">Settings</div>
+            
+            <div style="padding: 0 1rem; margin-bottom: 1rem;">
+                <div class="pill-toggle" id="themeToggle">
+                    <div class="pill-option active" data-theme="light">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    </div>
+                    <div class="pill-option" data-theme="dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="{{ url_for('main.settings') }}" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Settings
+            </a>
+            
+            <a href="{{ url_for('main.logout') }}" class="nav-item" style="color: var(--color-error);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Sign Out
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Mobile Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border); background: transparent;">
+            <button class="menu-toggle" id="menuToggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            
+            <div style="font-weight: 600; color: var(--color-text);">Brain Tumor Analysis</div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}" style="display:none;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div style="max-width: 800px; margin: 0 auto; padding: 2rem;">
+            <div class="card" style="margin-bottom: 2rem;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 64px; height: 64px; background: var(--color-accent-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--color-accent); margin: 0 auto 1rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>
+                    </div>
+                    <h1 style="font-size: 1.75rem; margin-bottom: 0.5rem;">MRI Scan Analysis</h1>
+                    <p style="color: var(--color-text-light);">Upload a brain MRI scan for AI-powered tumor detection</p>
+                </div>
+
+                <form method="post" action="{{ url_for('main.brain_tumor') }}" enctype="multipart/form-data">
+                    <div style="border: 2px dashed var(--color-border); border-radius: 12px; padding: 3rem 1.5rem; text-align: center; margin-bottom: 1.5rem; transition: all 0.2s ease; cursor: pointer; background: var(--color-surface-hover);" onclick="document.getElementById('mri_image').click()">
+                        <input type="file" id="mri_image" name="mri_image" accept="image/*" required style="display: none;" onchange="if(this.files.length > 0) document.getElementById('file-name').textContent = this.files[0].name">
+                        <div style="margin-bottom: 1rem; color: var(--color-primary);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        </div>
+                        <p style="font-weight: 600; margin-bottom: 0.5rem;">Click to upload or drag and drop</p>
+                        <p style="font-size: 0.875rem; color: var(--color-text-light); margin-bottom: 1rem;">PNG, JPG, JPEG, or BMP image</p>
+                        <p id="file-name" style="font-size: 0.875rem; color: var(--color-primary); font-weight: 500; min-height: 1.25rem;"></p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full btn-lg">
+                        Analyze MRI Scan
+                    </button>
+                </form>
+            </div>
+
+            {% if result %}
+            <div class="grid grid-2">
+                <!-- Image Preview -->
+                <div class="card">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 1rem;">Uploaded Scan</h3>
+                    {% if result.image_url %}
+                    <div style="border-radius: 8px; overflow: hidden; background: #000;">
+                        <img src="{{ result.image_url }}" alt="Uploaded brain MRI" style="width: 100%; height: auto; display: block;">
+                    </div>
+                    {% else %}
+                    <div style="padding: 2rem; text-align: center; color: var(--color-text-light); background: var(--color-surface-hover); border-radius: 8px;">
+                        No image available
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Results -->
+                <div class="card" style="border-left: 4px solid {% if result.is_tumor %}var(--color-error){% else %}var(--color-success){% endif %};">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Analysis Results</h2>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.875rem; color: var(--color-text-light); margin-bottom: 0.25rem;">Detection Status</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: {% if result.is_tumor %}var(--color-error){% else %}var(--color-success){% endif %};">
+                            {{ "Tumor Detected" if result.is_tumor else "No Tumor Detected" }}
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.875rem; color: var(--color-text-light); margin-bottom: 0.25rem;">Classification</div>
+                        <div style="font-size: 1.25rem; font-weight: 600; color: var(--color-text);">
+                            {{ result.predicted_class }}
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.875rem; color: var(--color-text-light); margin-bottom: 0.25rem;">Confidence</div>
+                        <div style="font-size: 1.25rem; font-weight: 600; color: var(--color-text);">
+                            {{ (result.probability * 100) | round(1) }}%
+                        </div>
+                    </div>
+
+                    {% if result.probabilities %}
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.875rem; color: var(--color-text-light); margin-bottom: 0.5rem;">Class Probabilities</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            {% for cls, prob in result.probabilities.items() %}
+                            <div style="display: flex; justify-content: space-between; font-size: 0.875rem;">
+                                <span>{{ cls }}</span>
+                                <span style="font-weight: 600;">{{ (prob * 100) | round(1) }}%</span>
+                            </div>
+                            <div style="height: 4px; background: var(--color-surface-hover); border-radius: 2px; overflow: hidden;">
+                                <div style="height: 100%; width: {{ prob * 100 }}%; background: var(--color-primary);"></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if result.log_id %}
+                    <a href="{{ url_for('main.brain_report', log_id=result.log_id) }}" class="btn btn-secondary btn-full">
+                        Download Report (PDF)
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Shared interactive grid script and main app script -->
+    <script src="{{ url_for('static', filename='js/interactive-grid.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script>
+    const brainForm = document.querySelector('form');
+    
+    if (brainForm) {
+        brainForm.addEventListener('submit', function() {
+            const btn = this.querySelector('button[type="submit"]');
+            
+            // 1. Change text to indicate processing
+            btn.textContent = "Analyzing MRI Scan...";
+            
+            // 2. Visual feedback
+            btn.style.opacity = "0.8";
+            btn.disabled = true;
+            btn.style.cursor = 'wait';
+        });
+    }
+</script>
+</body>
+</html>

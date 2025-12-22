@@ -1,0 +1,750 @@
+/* ============================================
+   MDDS - Professional Medical Platform UI
+   Version 4.0 - Sidebar Layout & Fancy UI
+   ============================================ */
+
+/* ============================================
+   FONTS
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ============================================
+   CSS VARIABLES
+   ============================================ */
+:root {
+  /* Fonts */
+  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  
+  /* Medical Blue Palette */
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --blue-800: #1e40af;
+  --blue-900: #1e3a8a;
+  
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  
+  --cyan-500: #06b6d4;
+  --cyan-600: #0891b2;
+  
+  /* Semantic Colors */
+  --color-primary: var(--blue-600);
+  --color-primary-hover: var(--blue-700);
+  --color-primary-light: var(--blue-50);
+  
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-error: #ef4444;
+  --color-error-light: #fee2e2;
+  --color-info: #06b6d4;
+  --color-info-light: #cffafe;
+  --color-accent: #8b5cf6;
+  --color-accent-light: #ede9fe;
+
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-hover: var(--slate-50);
+  --color-sidebar: #ffffff;
+  
+  --color-text: var(--slate-900);
+  --color-text-light: var(--slate-600);
+  --color-text-lighter: var(--slate-400);
+  
+  --color-border: var(--slate-200);
+  
+  /* Dimensions */
+  --sidebar-width: 280px;
+  --header-height: 70px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  
+  /* Transitions */
+  --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode */
+html[data-theme="dark"] {
+  --color-primary: var(--blue-500);
+  --color-primary-hover: var(--blue-600);
+  --color-primary-light: rgba(59, 130, 246, 0.1);
+  
+  --color-success: #34d399;
+  --color-success-light: rgba(16, 185, 129, 0.1);
+  --color-warning: #fbbf24;
+  --color-warning-light: rgba(245, 158, 11, 0.1);
+  --color-error: #f87171;
+  --color-error-light: rgba(239, 68, 68, 0.1);
+  --color-info: #22d3ee;
+  --color-info-light: rgba(6, 182, 212, 0.1);
+  --color-accent: #a78bfa;
+  --color-accent-light: rgba(139, 92, 246, 0.1);
+  
+  --color-bg: var(--slate-900);
+  --color-surface: var(--slate-800);
+  --color-surface-hover: var(--slate-700);
+  --color-sidebar: var(--slate-900);
+  
+  --color-text: var(--slate-100);
+  --color-text-light: var(--slate-300);
+  --color-text-lighter: var(--slate-400);
+  
+  --color-border: var(--slate-700);
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+html[data-theme="light"] body {
+  background-image: 
+    radial-gradient(at 40% 20%, hsla(217, 100%, 94%, 1) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(189, 100%, 96%, 1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(341, 100%, 96%, 1) 0px, transparent 50%);
+}
+
+/* ============================================
+   LAYOUTS
+   ============================================ */
+/* Default Layout (Welcome, Auth) */
+.layout-default {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Dashboard Layout (Sidebar) */
+.layout-dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--color-sidebar);
+  border-right: 1px solid var(--color-border);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition);
+}
+
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 2rem;
+  background-color: var(--color-bg);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+  background-attachment: scroll;
+  min-height: 100vh;
+  transition: margin-left var(--transition);
+}
+
+html[data-theme="light"] .main-content {
+  background-image: 
+    radial-gradient(at 40% 20%, hsla(217, 100%, 94%, 1) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(189, 100%, 96%, 1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(341, 100%, 96%, 1) 0px, transparent 50%);
+}
+
+/* Mobile Sidebar */
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+/* ============================================
+   COMPONENTS
+   ============================================ */
+/* Navbar (Top) */
+.navbar {
+  height: var(--header-height);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+/* Sidebar Navigation */
+.sidebar-header {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.sidebar-nav {
+  padding: 1.5rem 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all var(--transition);
+}
+
+.nav-item:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.nav-item.active {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Pill Toggle (New Dark Mode) */
+.pill-toggle {
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.pill-option {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-lighter);
+  transition: all var(--transition);
+}
+
+.pill-option.active {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Gradient Mesh Hero */
+.hero-mesh {
+  background-color: var(--color-bg);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+  position: relative;
+  overflow: hidden;
+}
+
+html[data-theme="light"] .hero-mesh {
+  background-image: 
+    radial-gradient(at 40% 20%, hsla(217, 100%, 94%, 1) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(189, 100%, 96%, 1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(341, 100%, 96%, 1) 0px, transparent 50%);
+}
+
+/* Cards */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+}
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  color: white;
+  background: linear-gradient(120deg, #1d4ed8, #3b82f6, #06b6d4);
+  background-size: 200% 200%;
+  animation: btn-gradient 3s ease infinite;
+}
+
+.btn-primary:hover {
+  animation-play-state: paused;
+  filter: drop-shadow(0 6px 20px rgba(59, 130, 246, 0.45));
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+/* Mobile Menu Button */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .menu-toggle {
+    display: block;
+  }
+}
+
+/* Utilities */
+.grid { display: grid; gap: 1.5rem; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+@media (max-width: 768px) {
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+.text-center { text-align: center; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-8 { margin-bottom: 2rem; }
+
+/* Forms */
+.form-group {
+  margin-bottom: 0.75rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  color: var(--color-text);
+  font-size: 0.875rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  transition: all var(--transition);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-lighter);
+}
+
+.heart-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.75rem;
+  align-items: stretch;
+}
+
+@media (min-width: 1024px) {
+  .heart-sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .heart-sections {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1536px) {
+  .heart-sections {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.heart-section {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  background: linear-gradient(135deg, var(--color-surface), var(--color-surface-hover));
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.heart-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.1), transparent 45%);
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+
+.heart-section:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.heart-section:hover::after {
+  opacity: 1;
+}
+
+.heart-section__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.heart-section__header h3 {
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+
+.heart-section__header p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+}
+
+.heart-section__pill {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.2);
+}
+
+.heart-section__fields {
+  margin-top: 0.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.heart-section__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.form-group-full {
+  grid-column: span 2;
+}
+
+/* Hide spin buttons for number inputs */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  transition: all var(--transition);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+html[data-theme="dark"] .form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+@keyframes btn-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ECG Heartbeat Background Animation */
+.ecg-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  overflow: hidden;
+}
+
+.ecg-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 200%;
+  height: 120px;
+  transform: translateY(-50%);
+  animation: ecg-scroll 15s linear infinite;
+}
+
+.ecg-line svg {
+  width: 100%;
+  height: 100%;
+}
+
+html[data-theme="dark"] .ecg-line path {
+  stroke: #ef4444;
+}
+
+html[data-theme="light"] .ecg-line path {
+  stroke: #3b82f6;
+}
+
+@keyframes ecg-scroll {
+  0% {
+    transform: translateY(-50%) translateX(0);
+  }
+  100% {
+    transform: translateY(-50%) translateX(-50%);
+  }
+}
+
+/* Ensure form card is above animation */
+.card {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================
+   INTERACTIVE GRID BACKGROUND
+   ============================================ */
+.interactive-grid-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+/* Canvas is created dynamically by ElasticGrid class */
+.interactive-grid-bg canvas {
+  display: block;
+}
+
+/* Ensure main content is above grid */
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Brain MRI page: make main content transparent so the grid background stays visible */
+.brain-grid-page .main-content {
+  background: transparent;
+}
+
+/* Apply gradient to interactive grid background for brain page */
+.brain-grid-page .interactive-grid-bg {
+  background-color: var(--color-bg);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+}
+
+html[data-theme="light"] .brain-grid-page .interactive-grid-bg {
+  background-image: 
+    radial-gradient(at 40% 20%, hsla(217, 100%, 94%, 1) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(189, 100%, 96%, 1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(341, 100%, 96%, 1) 0px, transparent 50%);
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR - Medical Theme
+   ============================================ */
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%);
+  border-radius: 10px;
+  border: 2px solid var(--color-surface);
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1e40af var(--color-surface);
+}
+
+/* Dark mode scrollbar adjustments */
+html[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--slate-800);
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%);
+  border-color: var(--slate-800);
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
+}
+
+html[data-theme="dark"] * {
+  scrollbar-color: #192f75 var(--slate-800);
+}

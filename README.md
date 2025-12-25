@@ -2,7 +2,7 @@
 
 **An Integrated Healthcare Platform powered by Machine Learning & AI**
 
-<img src="Project Image.png" width="800">
+<img src="Images/Project Image.png" width="800">
 
 ## 📋 Overview
 

@@ -18,6 +18,7 @@ The system features a professional, medical-grade user interface, secure authent
 * **Algorithm:** Random Forest Classifier.
 * **Input Data:** Clinical parameters including Age, Gender, BMI (derived from Height/Weight), Blood Pressure (Systolic/Diastolic), Cholesterol, and Glucose levels.
 * **Output:** Risk classification (Low, Medium, High) with a probability confidence score and tailored medical suggestions.
+<img src="Images/Heart Image.png" width="800">
 
 ### 2. 🧠 Brain Tumor Detection
 * **Algorithm:** Convolutional Neural Network (CNN) built with TensorFlow/Keras.
@@ -28,6 +29,7 @@ The system features a professional, medical-grade user interface, secure authent
     * Pituitary Tumor
     * No Tumor
 * **Output:** Tumor classification with confidence percentages for all classes.
+<img src="Images/Brain Image.png" width="800">
 
 ### 3. 🤖 Dr. MDDS (AI Medical Assistant)
 * **Powered By:** Groq Cloud API (Llama-3.1-8b-instant).
